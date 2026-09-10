@@ -1,9 +1,12 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Button } from '@/components/ui/button.jsx'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card.jsx'
 import { Badge } from '@/components/ui/badge.jsx'
 import { Search, MapPin, Phone, Star, Calendar, User } from 'lucide-react'
 import SEOHead from './components/SEOHead.jsx'
+import SiteFooter from './components/SiteFooter.jsx'
+import { storeInfo, buildWhatsappLink, phoneLink, mapsLink } from './lib/store.js'
 import './App.css'
 
 // Importando imagens
@@ -23,7 +26,8 @@ function App() {
       category: "Produto",
       readTime: "8 min",
       date: "17 Ago 2025",
-      featured: true
+      featured: true,
+      path: "/poco-x7-pro-review"
     },
     {
       id: 2,
@@ -33,7 +37,8 @@ function App() {
       category: "Produto",
       readTime: "6 min",
       date: "16 Ago 2025",
-      featured: true
+      featured: true,
+      productName: "Redmi Note 14 Pro 5G"
     },
     {
       id: 3,
@@ -43,7 +48,8 @@ function App() {
       category: "Produto",
       readTime: "5 min",
       date: "15 Ago 2025",
-      featured: false
+      featured: false,
+      productName: "POCO C75"
     }
   ]
 
@@ -55,20 +61,7 @@ function App() {
     { name: "Novidades", count: 4, color: "bg-red-500" }
   ]
 
-  const storeInfo = {
-    name: "SoftFone RP",
-    address: "Rua Américo Brasiliense, 835 - Centro",
-    phone: "(16) 3636-3965",
-    whatsapp: "(16) 3636-3965",
-    rating: 4.8,
-    years: 21,
-    services: ["Venda de Smartphones", "Assistência Técnica", "Garantia Estendida", "Parcelamento até 18x"]
-  }
-
-  const whatsappDigits = `55${storeInfo.whatsapp.replace(/\D/g, '')}`
-  const whatsappLink = `https://wa.me/${whatsappDigits}?text=${encodeURIComponent('Olá! Vi o site da SoftFone RP e gostaria de mais informações.')}`
-  const phoneLink = `tel:+55${storeInfo.phone.replace(/\D/g, '')}`
-  const mapsLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(storeInfo.address + ', Ribeirão Preto - SP')}`
+  const whatsappLink = buildWhatsappLink('Olá! Vi o site da SoftFone RP e gostaria de mais informações.')
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
@@ -171,9 +164,21 @@ function App() {
                       </span>
                     </div>
                   </div>
-                  <Button className="w-full mt-4 bg-orange-500 hover:bg-orange-600">
-                    Ler Artigo
-                  </Button>
+                  {article.path ? (
+                    <Button asChild className="w-full mt-4 bg-orange-500 hover:bg-orange-600">
+                      <Link to={article.path}>Ler Artigo</Link>
+                    </Button>
+                  ) : (
+                    <Button asChild className="w-full mt-4 bg-orange-500 hover:bg-orange-600">
+                      <a
+                        href={buildWhatsappLink(`Olá! Vi o artigo sobre o ${article.productName} no site e gostaria de mais informações.`)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Perguntar no WhatsApp
+                      </a>
+                    </Button>
+                  )}
                 </CardContent>
               </Card>
             ))}
@@ -264,53 +269,7 @@ function App() {
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-gray-800 text-white py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div>
-              <h4 className="text-xl font-bold mb-4">SoftFone Xiaomi RP</h4>
-              <p className="text-gray-300">
-                21 anos de tradição em Ribeirão Preto. Sua loja especializada 
-                em smartphones Xiaomi com assistência técnica e garantia estendida.
-              </p>
-            </div>
-            <div>
-              <h5 className="font-semibold mb-4">Produtos</h5>
-              <ul className="space-y-2 text-gray-300">
-                <li><a href="#" className="hover:text-orange-500 transition-colors">POCO X7 Pro</a></li>
-                <li><a href="#" className="hover:text-orange-500 transition-colors">Note 14 Pro 5G</a></li>
-                <li><a href="#" className="hover:text-orange-500 transition-colors">Note 14S</a></li>
-                <li><a href="#" className="hover:text-orange-500 transition-colors">POCO C75</a></li>
-              </ul>
-            </div>
-            <div>
-              <h5 className="font-semibold mb-4">Serviços</h5>
-              <ul className="space-y-2 text-gray-300">
-                <li><a href="#" className="hover:text-orange-500 transition-colors">Assistência Técnica</a></li>
-                <li><a href="#" className="hover:text-orange-500 transition-colors">Garantia Estendida</a></li>
-                <li><a href="#" className="hover:text-orange-500 transition-colors">Parcelamento</a></li>
-                <li><a href="#" className="hover:text-orange-500 transition-colors">Suporte Técnico</a></li>
-              </ul>
-            </div>
-            <div>
-              <h5 className="font-semibold mb-4">Contato</h5>
-              <a href={mapsLink} target="_blank" rel="noopener noreferrer" className="block text-gray-300 hover:text-orange-500 transition-colors mb-2">
-                Rua Américo Brasiliense, 835<br />Centro - Ribeirão Preto - SP
-              </a>
-              <a href={phoneLink} className="block text-gray-300 hover:text-orange-500 transition-colors mb-2">
-                📞 (16) 3636-3965
-              </a>
-              <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="block text-gray-300 hover:text-orange-500 transition-colors">
-                📱 WhatsApp: (16) 3636-3965
-              </a>
-            </div>
-          </div>
-          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">
-            <p>&copy; 2025 SoftFone Xiaomi RP. 21 anos de tradição em Ribeirão Preto.</p>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }
