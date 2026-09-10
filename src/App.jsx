@@ -65,6 +65,11 @@ function App() {
     services: ["Venda de Smartphones", "Assistência Técnica", "Garantia Estendida", "Parcelamento até 18x"]
   }
 
+  const whatsappDigits = `55${storeInfo.whatsapp.replace(/\D/g, '')}`
+  const whatsappLink = `https://wa.me/${whatsappDigits}?text=${encodeURIComponent('Olá! Vi o site da SoftFone RP e gostaria de mais informações.')}`
+  const phoneLink = `tel:+55${storeInfo.phone.replace(/\D/g, '')}`
+  const mapsLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(storeInfo.address + ', Ribeirão Preto - SP')}`
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <SEOHead />
@@ -112,8 +117,14 @@ function App() {
           </div>
           <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 max-w-2xl mx-auto">
             <h3 className="text-2xl font-bold mb-4">Visite Nossa Loja</h3>
-            <p className="text-lg mb-2">📍 Rua Américo Brasiliense, 835 - Centro</p>
-            <p className="text-lg mb-2">📞 (16) 3636-3965</p>
+            <p className="text-lg mb-2">
+              📍 <a href={mapsLink} target="_blank" rel="noopener noreferrer" className="underline hover:no-underline">
+                Rua Américo Brasiliense, 835 - Centro
+              </a>
+            </p>
+            <p className="text-lg mb-2">
+              📞 <a href={phoneLink} className="underline hover:no-underline">(16) 3636-3965</a>
+            </p>
             <p className="text-lg">🕒 Segunda a Sábado: 9h às 18h</p>
           </div>
         </div>
@@ -214,13 +225,17 @@ function App() {
                 </p>
                 <p className="text-gray-600 mb-2 flex items-center">
                   <Phone className="w-4 h-4 mr-2" />
-                  {storeInfo.phone}
+                  <a href={phoneLink} className="hover:text-orange-500 transition-colors">
+                    {storeInfo.phone}
+                  </a>
                 </p>
                 <p className="text-gray-600 mb-4">
                   <strong>{storeInfo.years} anos</strong> de tradição em Ribeirão Preto
                 </p>
-                <Button className="w-full bg-green-500 hover:bg-green-600">
-                  WhatsApp: {storeInfo.whatsapp}
+                <Button asChild className="w-full bg-green-500 hover:bg-green-600">
+                  <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+                    WhatsApp: {storeInfo.whatsapp}
+                  </a>
                 </Button>
               </CardContent>
             </Card>
@@ -238,8 +253,10 @@ function App() {
                     </div>
                   ))}
                 </div>
-                <Button variant="outline" className="w-full mt-4">
-                  Visite Nossa Loja
+                <Button asChild variant="outline" className="w-full mt-4">
+                  <a href={mapsLink} target="_blank" rel="noopener noreferrer">
+                    Visite Nossa Loja
+                  </a>
                 </Button>
               </CardContent>
             </Card>
@@ -278,10 +295,15 @@ function App() {
             </div>
             <div>
               <h5 className="font-semibold mb-4">Contato</h5>
-              <p className="text-gray-300 mb-2">Rua Américo Brasiliense, 835</p>
-              <p className="text-gray-300 mb-2">Centro - Ribeirão Preto - SP</p>
-              <p className="text-gray-300 mb-2">📞 (16) 3636-3965</p>
-              <p className="text-gray-300">📱 WhatsApp: (16) 3636-3965</p>
+              <a href={mapsLink} target="_blank" rel="noopener noreferrer" className="block text-gray-300 hover:text-orange-500 transition-colors mb-2">
+                Rua Américo Brasiliense, 835<br />Centro - Ribeirão Preto - SP
+              </a>
+              <a href={phoneLink} className="block text-gray-300 hover:text-orange-500 transition-colors mb-2">
+                📞 (16) 3636-3965
+              </a>
+              <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="block text-gray-300 hover:text-orange-500 transition-colors">
+                📱 WhatsApp: (16) 3636-3965
+              </a>
             </div>
           </div>
           <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">

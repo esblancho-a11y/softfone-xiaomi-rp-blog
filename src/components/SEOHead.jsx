@@ -44,6 +44,7 @@ const SEOHead = ({
       "description": "Guia completo de smartphones Xiaomi em Ribeirão Preto",
       "address": {
         "@type": "PostalAddress",
+        "streetAddress": "Rua Américo Brasiliense, 835 - Centro",
         "addressLocality": "Ribeirão Preto",
         "addressRegion": "SP",
         "addressCountry": "BR"
@@ -54,9 +55,9 @@ const SEOHead = ({
         "longitude": "-47.8103"
       },
       "url": url,
-      "telephone": "+55-16-99999-9999",
+      "telephone": "+55-16-3636-3965",
       "priceRange": "$$",
-      "openingHours": "Mo-Su 00:00-23:59"
+      "openingHours": "Mo-Sa 09:00-18:00"
     }
 
     // Remove existing structured data
