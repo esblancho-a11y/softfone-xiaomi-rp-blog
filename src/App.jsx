@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button.jsx'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card.jsx'
 import { Badge } from '@/components/ui/badge.jsx'
 import { Search, MapPin, Phone, Star, Calendar, User } from 'lucide-react'
 import SEOHead from './components/SEOHead.jsx'
+import VendaCard from './components/VendaCard.jsx'
 import './App.css'
 
 // Importando imagens
@@ -13,6 +14,13 @@ import pocoC751 from './assets/blog_images/poco_c75/poco_c75_1.jpg'
 
 function App() {
   const [searchTerm, setSearchTerm] = useState('')
+  const [hash, setHash] = useState(window.location.hash)
+
+  useEffect(() => {
+    const onHashChange = () => setHash(window.location.hash)
+    window.addEventListener('hashchange', onHashChange)
+    return () => window.removeEventListener('hashchange', onHashChange)
+  }, [])
 
   const featuredArticles = [
     {
@@ -63,6 +71,11 @@ function App() {
     rating: 4.8,
     years: 21,
     services: ["Venda de Smartphones", "Assistência Técnica", "Garantia Estendida", "Parcelamento até 18x"]
+  }
+
+  // Página interna de registro de vendas: acessar pelo endereço do site + #venda
+  if (hash === '#venda') {
+    return <VendaCard />
   }
 
   return (
