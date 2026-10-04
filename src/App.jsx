@@ -1,8 +1,7 @@
-import { useState } from 'react'
 import { Button } from '@/components/ui/button.jsx'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card.jsx'
 import { Badge } from '@/components/ui/badge.jsx'
-import { Search, MapPin, Phone, Star, Calendar, User } from 'lucide-react'
+import { MapPin, Phone, MessageCircle } from 'lucide-react'
 import SEOHead from './components/SEOHead.jsx'
 import './App.css'
 
@@ -11,9 +10,15 @@ import pocoX7Pro1 from './assets/blog_images/poco_x7_pro/poco_x7_pro_1.jpg'
 import note14Pro5G1 from './assets/blog_images/redmi_note_14_pro_5g/note_14_pro_5g_1.jpg'
 import pocoC751 from './assets/blog_images/poco_c75/poco_c75_1.jpg'
 
-function App() {
-  const [searchTerm, setSearchTerm] = useState('')
+const WHATSAPP_NUMBER = '551636363965'
+const MAPS_URL = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent('SoftFone Rua Américo Brasiliense, 835 Ribeirão Preto SP')
 
+const whatsappLink = (message) =>
+  `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`
+
+const GENERIC_MESSAGE = 'Olá! Vim pelo site da SoftFone Xiaomi RP e gostaria de um atendimento.'
+
+function App() {
   const featuredArticles = [
     {
       id: 1,
@@ -21,8 +26,7 @@ function App() {
       excerpt: "Conheça o POCO X7 Pro disponível na SoftFone RP. Análise completa de desempenho, câmera e por que escolher nossa loja em Ribeirão Preto.",
       image: pocoX7Pro1,
       category: "Produto",
-      readTime: "8 min",
-      date: "17 Ago 2025",
+      message: "Olá! Vim pelo site e quero saber preço e disponibilidade do POCO X7 Pro.",
       featured: true
     },
     {
@@ -31,8 +35,7 @@ function App() {
       excerpt: "Descubra as vantagens de adquirir o Redmi Note 14 Pro 5G na SoftFone RP: garantia estendida, assistência técnica e preço justo.",
       image: note14Pro5G1,
       category: "Produto",
-      readTime: "6 min",
-      date: "16 Ago 2025",
+      message: "Olá! Vim pelo site e quero saber preço e disponibilidade do Redmi Note 14 Pro 5G.",
       featured: true
     },
     {
@@ -41,18 +44,9 @@ function App() {
       excerpt: "O POCO C75 chegou na SoftFone RP! Conheça as especificações e por que nossa loja oferece o melhor negócio da cidade.",
       image: pocoC751,
       category: "Produto",
-      readTime: "5 min",
-      date: "15 Ago 2025",
+      message: "Olá! Vim pelo site e quero saber preço e disponibilidade do POCO C75.",
       featured: false
     }
-  ]
-
-  const categories = [
-    { name: "Produtos", count: 12, color: "bg-blue-500" },
-    { name: "Promoções", count: 8, color: "bg-green-500" },
-    { name: "Assistência", count: 15, color: "bg-purple-500" },
-    { name: "Dicas", count: 6, color: "bg-orange-500" },
-    { name: "Novidades", count: 4, color: "bg-red-500" }
   ]
 
   const storeInfo = {
@@ -60,7 +54,6 @@ function App() {
     address: "Rua Américo Brasiliense, 835 - Centro",
     phone: "(16) 3636-3965",
     whatsapp: "(16) 3636-3965",
-    rating: 4.8,
     years: 21,
     services: ["Venda de Smartphones", "Assistência Técnica", "Garantia Estendida", "Parcelamento até 18x"]
   }
@@ -80,16 +73,6 @@ function App() {
                 <MapPin className="w-4 h-4 mr-1" />
                 Sua loja especializada em Xiaomi em Ribeirão Preto - Rua Américo Brasiliense, 835
               </p>
-            </div>
-            <div className="flex items-center space-x-2 bg-gray-100 rounded-full px-4 py-2">
-              <Search className="w-5 h-5 text-gray-500" />
-              <input
-                type="text"
-                placeholder="Buscar artigos..."
-                className="bg-transparent outline-none text-gray-700 w-64"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
             </div>
           </div>
         </div>
@@ -114,7 +97,13 @@ function App() {
             <h3 className="text-2xl font-bold mb-4">Visite Nossa Loja</h3>
             <p className="text-lg mb-2">📍 Rua Américo Brasiliense, 835 - Centro</p>
             <p className="text-lg mb-2">📞 (16) 3636-3965</p>
-            <p className="text-lg">🕒 Segunda a Sábado: 9h às 18h</p>
+            <p className="text-lg mb-6">🕒 Segunda a Sábado: 9h às 18h</p>
+            <Button asChild size="lg" className="bg-green-500 hover:bg-green-600 text-white">
+              <a href={whatsappLink(GENERIC_MESSAGE)} target="_blank" rel="noopener noreferrer">
+                <MessageCircle className="w-5 h-5 mr-2" />
+                Chamar no WhatsApp
+              </a>
+            </Button>
           </div>
         </div>
       </section>
@@ -124,7 +113,7 @@ function App() {
         {/* Featured Articles */}
         <section className="mb-16">
           <h3 className="text-3xl font-bold text-gray-800 mb-8 text-center">
-            Artigos em Destaque
+            Em Destaque na Loja
           </h3>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredArticles.map((article) => (
@@ -148,43 +137,12 @@ function App() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="flex items-center justify-between text-sm text-gray-500">
-                    <div className="flex items-center space-x-4">
-                      <span className="flex items-center">
-                        <Calendar className="w-4 h-4 mr-1" />
-                        {article.date}
-                      </span>
-                      <span className="flex items-center">
-                        <User className="w-4 h-4 mr-1" />
-                        {article.readTime}
-                      </span>
-                    </div>
-                  </div>
-                  <Button className="w-full mt-4 bg-orange-500 hover:bg-orange-600">
-                    Ler Artigo
+                  <Button asChild className="w-full bg-green-500 hover:bg-green-600">
+                    <a href={whatsappLink(article.message)} target="_blank" rel="noopener noreferrer">
+                      <MessageCircle className="w-4 h-4 mr-2" />
+                      Consultar preço no WhatsApp
+                    </a>
                   </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </section>
-
-        {/* Categories */}
-        <section className="mb-16">
-          <h3 className="text-3xl font-bold text-gray-800 mb-8 text-center">
-            Categorias
-          </h3>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-            {categories.map((category) => (
-              <Card key={category.name} className="text-center hover:shadow-lg transition-shadow cursor-pointer group">
-                <CardContent className="p-6">
-                  <div className={`w-16 h-16 ${category.color} rounded-full mx-auto mb-4 flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                    <span className="text-white font-bold text-xl">{category.count}</span>
-                  </div>
-                  <h4 className="font-semibold text-gray-800 group-hover:text-orange-500 transition-colors">
-                    {category.name}
-                  </h4>
-                  <p className="text-sm text-gray-500 mt-1">{category.count} artigos</p>
                 </CardContent>
               </Card>
             ))}
@@ -201,10 +159,6 @@ function App() {
               <CardHeader>
                 <CardTitle className="flex items-center justify-between">
                   {storeInfo.name}
-                  <div className="flex items-center">
-                    <Star className="w-4 h-4 text-yellow-500 mr-1" />
-                    <span className="text-sm">{storeInfo.rating}</span>
-                  </div>
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -219,8 +173,11 @@ function App() {
                 <p className="text-gray-600 mb-4">
                   <strong>{storeInfo.years} anos</strong> de tradição em Ribeirão Preto
                 </p>
-                <Button className="w-full bg-green-500 hover:bg-green-600">
-                  WhatsApp: {storeInfo.whatsapp}
+                <Button asChild className="w-full bg-green-500 hover:bg-green-600">
+                  <a href={whatsappLink(GENERIC_MESSAGE)} target="_blank" rel="noopener noreferrer">
+                    <MessageCircle className="w-4 h-4 mr-2" />
+                    WhatsApp: {storeInfo.whatsapp}
+                  </a>
                 </Button>
               </CardContent>
             </Card>
@@ -238,8 +195,10 @@ function App() {
                     </div>
                   ))}
                 </div>
-                <Button variant="outline" className="w-full mt-4">
-                  Visite Nossa Loja
+                <Button asChild variant="outline" className="w-full mt-4">
+                  <a href={MAPS_URL} target="_blank" rel="noopener noreferrer">
+                    Como chegar
+                  </a>
                 </Button>
               </CardContent>
             </Card>
@@ -261,34 +220,49 @@ function App() {
             <div>
               <h5 className="font-semibold mb-4">Produtos</h5>
               <ul className="space-y-2 text-gray-300">
-                <li><a href="#" className="hover:text-orange-500 transition-colors">POCO X7 Pro</a></li>
-                <li><a href="#" className="hover:text-orange-500 transition-colors">Note 14 Pro 5G</a></li>
-                <li><a href="#" className="hover:text-orange-500 transition-colors">Note 14S</a></li>
-                <li><a href="#" className="hover:text-orange-500 transition-colors">POCO C75</a></li>
+                <li><a href={whatsappLink("Olá! Vim pelo site e quero saber preço e disponibilidade do POCO X7 Pro.")} target="_blank" rel="noopener noreferrer" className="hover:text-orange-500 transition-colors">POCO X7 Pro</a></li>
+                <li><a href={whatsappLink("Olá! Vim pelo site e quero saber preço e disponibilidade do Redmi Note 14 Pro 5G.")} target="_blank" rel="noopener noreferrer" className="hover:text-orange-500 transition-colors">Note 14 Pro 5G</a></li>
+                <li><a href={whatsappLink("Olá! Vim pelo site e quero saber preço e disponibilidade do Redmi Note 14S.")} target="_blank" rel="noopener noreferrer" className="hover:text-orange-500 transition-colors">Note 14S</a></li>
+                <li><a href={whatsappLink("Olá! Vim pelo site e quero saber preço e disponibilidade do POCO C75.")} target="_blank" rel="noopener noreferrer" className="hover:text-orange-500 transition-colors">POCO C75</a></li>
               </ul>
             </div>
             <div>
               <h5 className="font-semibold mb-4">Serviços</h5>
               <ul className="space-y-2 text-gray-300">
-                <li><a href="#" className="hover:text-orange-500 transition-colors">Assistência Técnica</a></li>
-                <li><a href="#" className="hover:text-orange-500 transition-colors">Garantia Estendida</a></li>
-                <li><a href="#" className="hover:text-orange-500 transition-colors">Parcelamento</a></li>
-                <li><a href="#" className="hover:text-orange-500 transition-colors">Suporte Técnico</a></li>
+                <li><a href={whatsappLink("Olá! Vim pelo site e preciso de assistência técnica para meu celular.")} target="_blank" rel="noopener noreferrer" className="hover:text-orange-500 transition-colors">Assistência Técnica</a></li>
+                <li><a href={whatsappLink("Olá! Vim pelo site e quero saber sobre garantia estendida.")} target="_blank" rel="noopener noreferrer" className="hover:text-orange-500 transition-colors">Garantia Estendida</a></li>
+                <li><a href={whatsappLink("Olá! Vim pelo site e quero saber sobre parcelamento.")} target="_blank" rel="noopener noreferrer" className="hover:text-orange-500 transition-colors">Parcelamento</a></li>
+                <li><a href={whatsappLink("Olá! Vim pelo site e preciso de suporte técnico.")} target="_blank" rel="noopener noreferrer" className="hover:text-orange-500 transition-colors">Suporte Técnico</a></li>
               </ul>
             </div>
             <div>
               <h5 className="font-semibold mb-4">Contato</h5>
               <p className="text-gray-300 mb-2">Rua Américo Brasiliense, 835</p>
               <p className="text-gray-300 mb-2">Centro - Ribeirão Preto - SP</p>
-              <p className="text-gray-300 mb-2">📞 (16) 3636-3965</p>
-              <p className="text-gray-300">📱 WhatsApp: (16) 3636-3965</p>
+              <p className="text-gray-300 mb-2">
+                <a href="tel:+551636363965" className="hover:text-orange-500 transition-colors">📞 (16) 3636-3965</a>
+              </p>
+              <p className="text-gray-300">
+                <a href={whatsappLink(GENERIC_MESSAGE)} target="_blank" rel="noopener noreferrer" className="hover:text-orange-500 transition-colors">📱 WhatsApp: (16) 3636-3965</a>
+              </p>
             </div>
           </div>
           <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">
-            <p>&copy; 2025 SoftFone Xiaomi RP. 21 anos de tradição em Ribeirão Preto.</p>
+            <p>&copy; {new Date().getFullYear()} SoftFone Xiaomi RP. 21 anos de tradição em Ribeirão Preto.</p>
           </div>
         </div>
       </footer>
+
+      <a
+        href={whatsappLink(GENERIC_MESSAGE)}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Chamar no WhatsApp"
+        className="fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-full bg-green-500 px-5 py-3 font-semibold text-white shadow-lg hover:bg-green-600 transition-colors"
+      >
+        <MessageCircle className="w-6 h-6" />
+        <span className="hidden sm:inline">WhatsApp</span>
+      </a>
     </div>
   )
 }
