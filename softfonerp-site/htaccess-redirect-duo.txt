@@ -1,0 +1,3 @@
+# Cole no INÍCIO do .htaccess da raiz (public_html), antes das regras do WordPress/outros.
+# Corrige o 404 de duo-ribeirao-preto.html (a página real é iphone-duo-ribeirao-preto.html).
+Redirect 301 /duo-ribeirao-preto.html https://www.softfonerp.com.br/iphone-duo-ribeirao-preto.html
